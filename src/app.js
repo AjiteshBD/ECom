@@ -17,7 +17,8 @@ const productRoutes = require('../routes/productRoute');
 
 //db
 mongoose.connect(process.env.DATABASE,{
-    useNewUrlParser:true
+    useNewUrlParser:true,
+    useCreateIndex: true
 }).then(()=>{
     console.log(`DB Connected !!`);
 });

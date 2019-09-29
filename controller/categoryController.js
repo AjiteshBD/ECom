@@ -2,16 +2,15 @@ const Category = require("../models/category");
 const {errorHandler}=require("../util/dbErrorHandler");
 
 exports.findCategoryById =(req,res,next,id)=>{
-    Category.findById(id).exec((err,category)=>{
-        if(err|| !category){
+    Category.findById(id).exec((err, category) => {
+        if (err || !category) {
             return res.status(400).json({
-                error:"Category does not exit"
-            })
+                error: "Category does not exist"
+            });
         }
         req.category = category;
         next();
-    })
-    
+    });
 };
 
 exports.create = (req,res)=>{
@@ -32,3 +31,41 @@ exports.read = (req,res)=>{
     return res.category
 };
 
+exports.update = (req,res)=>{
+    const category = req.category;
+    category.name = req.body.name;
+    category.save((err,data)=>{
+        if(err){
+            return res.status(400).json({
+                error : errorHandler(err)
+            }); 
+        }
+        res.json(data)
+    })
+};
+
+
+exports.remove = (req,res)=>{
+    const category = req.category;
+    category.remove((err,data)=>{
+        if(err){
+            return res.status(400).json({
+                error : errorHandler(err)
+            }); 
+        }
+        res.json({
+            message : "Category Deleted Sucessfully!!"
+        })
+    })
+};
+
+exports.list = (req,res)=>{
+    Category.find().exec((err,data)=>{
+        if(err){
+            return res.status(400).json({
+                error : errorHandler(err)
+            }); 
+        }
+        res.json(data);
+    })
+};
