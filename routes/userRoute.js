@@ -1,7 +1,7 @@
 const express = require('express');
 const routes = express.Router();
 
-const {findUserByID} = require("../controller/userController.js");
+const {findUserByID,read,update} = require("../controller/userController.js");
 const { requireSignin,isAuth,isAdmin} = require("../controller/authController");
 
 routes.get("/secret/:userId",requireSignin,isAuth,isAdmin,(req,res)=>{
@@ -10,8 +10,9 @@ routes.get("/secret/:userId",requireSignin,isAuth,isAdmin,(req,res)=>{
     })
 })
 
+routes.get('/user/:userId',requireSignin,isAuth,read)
+routes.put('/user/:userId',requireSignin,isAuth,update)
+
 routes.param('userId',findUserByID);
-
-
 
 module.exports = routes;
